@@ -1,0 +1,40 @@
+{
+  "name": "dot-organizer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
+  "watch": {
+    "exec": [
+      "src/service/**/*.js",
+      "src/service/*.js"
+    ]
+  },
+  "scripts": {
+    "build": "rm -rf dist && babel src/service -d dist/service && cp -a src/service/server/public dist/service/server/public",
+    "exec": "npm run build && cd dist && node service/index.js",
+    "watch": "npm-watch",
+    "start": "npm run watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/hapi": "^20.2.2",
+    "@hapi/inert": "^7.0.0",
+    "create-subject-with-filter": "^0.0.5",
+    "npm-watch": "^0.11.0",
+    "socket.io": "^4.5.1",
+    "subject-with-filter": "^1.0.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.18.10",
+    "@babel/core": "^7.18.10",
+    "@babel/preset-env": "^7.18.10"
+  }
+}
