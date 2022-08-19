@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 
 import io from 'socket.io-client'
 
-import TaskList from './components/TaskList/TaskList.js'
+import { TaskList } from './components/Task/TaskList.js'
 
 const socket = io({ path: '/socket' })
 
@@ -40,7 +40,7 @@ function App() {
 	return (
 		<div className="App">
 			<TaskList 
-				size={75}
+				size={50}
 				data={data}
 				upsertTask={upsertTask}
 			/>

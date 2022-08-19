@@ -1,11 +1,9 @@
 
 import Grid from '@mui/material/Grid'
 
-import './TaskTitle.css'
-
 import React from 'react'
 
-function TaskTitle({ title }) {
+export const TaskTitle = ({ title }) => {
 	if (title) {
 		return (
 			<Grid item xs={6}>
@@ -16,5 +14,3 @@ function TaskTitle({ title }) {
 		)
 	}
 }
-
-export default TaskTitle

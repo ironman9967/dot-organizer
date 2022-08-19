@@ -1,16 +1,15 @@
 
-import TaskRow from '../TaskRow/TaskRow.js'
-import Grid from '@mui/material/Grid'
-
-import './TaskList.css'
-
 import React from 'react'
 
-function TaskList({ 
+import Grid from '@mui/material/Grid'
+
+import { TaskRow } from './TaskRow.js'
+
+export const TaskList = ({ 
 	size, 
 	data: { tasks, assignments },
 	upsertTask
-}) {
+}) => {
 	if (tasks) {
 		return (
 			<Grid
@@ -42,5 +41,3 @@ function TaskList({
 		)
 	}
 }
-
-export default TaskList
