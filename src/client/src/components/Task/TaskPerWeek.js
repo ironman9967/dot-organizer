@@ -18,12 +18,13 @@ export const TaskPerWeek = ({
 		return (
 			<Grid item xs={5}>
 				<div style={{ textAlign: 'right' }} >
-					<IconButton>
+					<IconButton
+						onClick={() => upsertTask({
+							timesPerWeek: timesPerWeek <= 0 ? 0 : timesPerWeek - 1
+						})}
+					>
 						<RemoveCircleIcon
 							style={{ fontSize: size }}
-							onClick={() => upsertTask({
-								timesPerWeek: timesPerWeek <= 0 ? 0 : timesPerWeek - 1
-							})}
 						/>
 					</IconButton>
 					{
@@ -34,12 +35,13 @@ export const TaskPerWeek = ({
 							/>
 						))
 					}
-					<IconButton>
+					<IconButton
+						onClick={() => upsertTask({
+							timesPerWeek: timesPerWeek + 1
+						})}
+					>
 						<AddCircleIcon
 							style={{ fontSize: size }}
-							onClick={() => upsertTask({
-								timesPerWeek: timesPerWeek + 1
-							})}
 						/>
 					</IconButton>
 				</div>
