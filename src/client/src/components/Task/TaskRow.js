@@ -3,9 +3,9 @@ import React from 'react'
 
 import Grid from '@mui/material/Grid'
 
-import { TaskDot } from './TaskDot.js'
-import { TaskTitle } from './TaskTitle.js'
-import { TaskPerWeek } from './TaskPerWeek.js'
+import { TaskDot } from './TaskDot'
+import { TaskTitle } from './TaskTitle'
+import { TaskPerWeek } from './TaskPerWeek'
 
 export const TaskRow = ({ 
 	size, 
@@ -13,28 +13,32 @@ export const TaskRow = ({
 	assignments,
 	upsertTask
 }) => {
-	if (task) {
-		const upsertThisTask = taskUpdates => {
-			upsertTask({
-				...task,
-				...taskUpdates,
-				_key: task._key
-			})
-		}
-		return (
-			<Grid 
-				container 
-				spacing={2}
-				direction="row"
-				justifyContent="center"
-				alignItems="center"
-			>
+	if (!task) return
+	const upsertThisTask = taskUpdates => {
+		upsertTask({
+			...task,
+			...taskUpdates,
+			_key: task._key
+		})
+	}
+	return (
+		<Grid 
+			container 
+			spacing={2}
+			direction="row"
+			alignItems="center"
+		>
+			<Grid item xs="1">
 				<TaskDot
 					size={size}
 					color={task.color}
 					upsertTask={upsertThisTask}
 				/>
+			</Grid>
+			<Grid item xs="3">
 				<TaskTitle title={task.title} />
+			</Grid>
+			<Grid item xs="8">
 				<TaskPerWeek 
 					size={size}
 					color={task.color}
@@ -42,6 +46,6 @@ export const TaskRow = ({
 					upsertTask={upsertThisTask}
 				/>
 			</Grid>
-		)
-	}
+		</Grid>
+	)
 }

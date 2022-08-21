@@ -14,41 +14,41 @@ export const TaskPerWeek = ({
 	timesPerWeek,
 	upsertTask
 }) => {
-	if (color) {
-		return (
-			<Grid 
-				style={{ padding: 0 }}
-				item xs={5}
+	if (!color) return
+	return (
+		<Grid
+			container 
+			spacing={2}
+			direction="row"
+			justifyContent="right"
+			alignItems="center"
+		>
+			<IconButton
+				onClick={() => upsertTask({
+					timesPerWeek: timesPerWeek <= 0 ? 0 : timesPerWeek - 1
+				})}
 			>
-				<div style={{ textAlign: 'right' }} >
-					<IconButton
-						onClick={() => upsertTask({
-							timesPerWeek: timesPerWeek <= 0 ? 0 : timesPerWeek - 1
-						})}
-					>
-						<RemoveCircleIcon
-							style={{ fontSize: size }}
-						/>
-					</IconButton>
-					{
-						new Array(timesPerWeek).fill(null).map((n, i) => (
-							<CircleTwoToneIcon 
-								style={{ fontSize: Math.ceil(size), color }}
-								key={i}
-							/>
-						))
-					}
-					<IconButton
-						onClick={() => upsertTask({
-							timesPerWeek: timesPerWeek + 1
-						})}
-					>
-						<AddCircleIcon
-							style={{ fontSize: size }}
-						/>
-					</IconButton>
-				</div>
-			</Grid>
-		)
-	}
+				<RemoveCircleIcon
+					style={{ fontSize: size }}
+				/>
+			</IconButton>
+			{
+				new Array(timesPerWeek).fill(null).map((n, i) => (
+					<CircleTwoToneIcon 
+						style={{ fontSize: size, color }}
+						key={i}
+					/>
+				))
+			}
+			<IconButton
+				onClick={() => upsertTask({
+					timesPerWeek: timesPerWeek + 1
+				})}
+			>
+				<AddCircleIcon
+					style={{ fontSize: size }}
+				/>
+			</IconButton>
+		</Grid>
+	)
 }

@@ -4,7 +4,7 @@ import React from 'react'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 
-import { TaskRow } from './TaskRow.js'
+import { TaskRow } from './TaskRow'
 
 export const TaskList = ({ 
 	size, 

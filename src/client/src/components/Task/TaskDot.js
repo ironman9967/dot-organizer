@@ -1,7 +1,6 @@
 
 import { useState } from 'react'
 
-import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 
 import CircleTwoToneIcon from '@mui/icons-material/CircleTwoTone'
@@ -14,45 +13,39 @@ export const TaskDot = ({
 	upsertTask
 }) => {
 	const [ isSelectingColor, setIsSelectingColor ] = useState(false)
-	if (color) {
-		return (
-			<Grid 
-				style={{ padding: 0 }}
-				item xs={1}
-			>
-				<div>
-					<CircleTwoToneIcon 
-						style={{ 
-							fontSize: size, 
-							color,
-							paddingTop: 4.05
-						}}
-						onClick={({ target: { localName } }) => {
-							if (isSelectingColor || localName !== 'circle') {
-								setIsSelectingColor(false)
-							}
-							else {
-								setIsSelectingColor(true)
-							}
-						}}
-					/>
-					{isSelectingColor &&
-						<div style={{ 
-							position: 'absolute',
-							left: '3.6%'
-						}}>
-							<Paper elevation={24} >
-								<GithubPicker
-									onChangeComplete={({ hex: color }) => {
-										upsertTask({ color })
-										setIsSelectingColor(false)
-									}}
-								/>
-							</Paper>
-						</div>
+	if (!color) return 
+	return (
+		<div>
+			<CircleTwoToneIcon 
+				style={{ 
+					fontSize: size, 
+					color,
+					// paddingTop: 4.05
+				}}
+				onClick={({ target: { localName } }) => {
+					if (isSelectingColor || localName !== 'circle') {
+						setIsSelectingColor(false)
 					}
+					else {
+						setIsSelectingColor(true)
+					}
+				}}
+			/>
+			{isSelectingColor &&
+				<div style={{ 
+					position: 'absolute',
+					// left: '3.6%'
+				}}>
+					<Paper elevation={24} >
+						<GithubPicker
+							onChangeComplete={({ hex: color }) => {
+								upsertTask({ color })
+								setIsSelectingColor(false)
+							}}
+						/>
+					</Paper>
 				</div>
-			</Grid>
-		)
-	}
+			}
+		</div>
+	)
 }

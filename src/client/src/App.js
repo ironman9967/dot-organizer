@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 
 import io from 'socket.io-client'
 
+import { WeekGrid } from './components/Week/WeekGrid.js'
 import { TaskList } from './components/Task/TaskList.js'
 
 const socket = io({ path: '/socket' })
@@ -39,6 +40,10 @@ function App() {
 	}, [ isConnected, data ])
 	return (
 		<div className="App">
+			<WeekGrid
+				size={50}
+				data={data}
+			/>
 			<TaskList 
 				size={50}
 				data={data}
