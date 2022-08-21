@@ -6,7 +6,11 @@ import React from 'react'
 export const TaskTitle = ({ title }) => {
 	if (title) {
 		return (
-			<Grid item xs={6}>
+			<Grid 
+				style={{ padding: 0 }}
+				item
+				xs={6}
+			>
 				<div style={{ textAlign: 'left' }}>
 					{title}
 				</div>

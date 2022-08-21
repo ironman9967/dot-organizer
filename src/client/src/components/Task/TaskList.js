@@ -2,6 +2,7 @@
 import React from 'react'
 
 import Grid from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
 
 import { TaskRow } from './TaskRow.js'
 
@@ -10,8 +11,13 @@ export const TaskList = ({
 	data: { tasks, assignments },
 	upsertTask
 }) => {
-	if (tasks) {
-		return (
+	if (!tasks) return
+	const style = { margin: 5 }
+	return (
+		<Paper
+			style={{ margin: 15 }}
+			elevation={24}
+		>
 			<Grid
 				container
 				spacing={2}
@@ -25,19 +31,25 @@ export const TaskList = ({
 					) => order1 - order2)
 					.map(task => (
 						<Grid
+							style={style}
 							item
 							key={task.title}
 							xs={12}
 						>
-							<TaskRow 
-								size={size} 
-								task={task} 
-								assignments={assignments}
-								upsertTask={upsertTask}
-							/>
+							<Paper
+								style={style}
+								elevation={6}
+							>
+								<TaskRow 
+									size={size} 
+									task={task} 
+									assignments={assignments}
+									upsertTask={upsertTask}
+								/>
+							</Paper>
 						</Grid>
 					))
 			}</Grid>
-		)
-	}
+		</Paper>
+	)
 }

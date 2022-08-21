@@ -16,7 +16,10 @@ export const TaskPerWeek = ({
 }) => {
 	if (color) {
 		return (
-			<Grid item xs={5}>
+			<Grid 
+				style={{ padding: 0 }}
+				item xs={5}
+			>
 				<div style={{ textAlign: 'right' }} >
 					<IconButton
 						onClick={() => upsertTask({
