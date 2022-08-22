@@ -6,11 +6,13 @@ import Paper from '@mui/material/Paper'
 
 import { DayOfWeekHeader } from './DayOfWeekHeader'
 import { TimeslotTitle } from './TimeslotTitle'
-import { TimeslotAssignments } from './TimeslotAssignments'
+import { TimeslotAssignmentList } from './TimeslotAssignmentList'
 
 export const WeekGrid = ({ 
 	size, 
-	data: { tasks, timeslots, daysOfWeek, assignments }
+	data: { tasks, timeslots, daysOfWeek, assignments },
+	removeAssignment,
+	upsertAssignment
 }) => {
 	if (!timeslots) return
 	const headers = [ 'Timeslots', ...daysOfWeek.map(({ title }) => title) ]
@@ -51,6 +53,20 @@ export const WeekGrid = ({
 								}
 								return tmAssigns
 							}, [])
+						const assignThisTimeslot = ({
+							dayOfWeekTitle,
+							taskTitle
+						}) => upsertAssignment({
+							dayOfWeekTitle,
+							timeslotBegin: timeslot.begin,
+							taskTitle
+						})
+						const unassignThisTimeslot = ({
+							taskTitle
+						}) => removeAssignment({
+							timeslotBegin: timeslot.begin,
+							taskTitle
+						})
 						return (
 							<Grid
 								container
@@ -76,9 +92,12 @@ export const WeekGrid = ({
 											key={dayOfWeek.title}
 											xs={1}
 										>
-											<TimeslotAssignments
+											<TimeslotAssignmentList
 												size={size}
+												dayOfWeek={dayOfWeek}
 												timeslotAssignments={timeslotAssignments(dayOfWeek)}
+												unassignThisTimeslot={unassignThisTimeslot}
+												assignThisTimeslot={assignThisTimeslot}
 											/>
 										</Grid>
 									)

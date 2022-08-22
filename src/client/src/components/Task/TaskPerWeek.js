@@ -1,54 +1,27 @@
 
 import React from 'react'
+import { useDrag } from 'react-dnd'
 
-import Grid from '@mui/material/Grid'
-
-import IconButton from '@mui/material/IconButton'
-import AddCircleIcon from '@mui/icons-material/AddCircle'
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import CircleTwoToneIcon from '@mui/icons-material/CircleTwoTone'
+import CheckCircleTwoToneIcon from '@mui/icons-material/CheckCircleTwoTone'
 
-export const TaskPerWeek = ({ 
-	size,
-	color,
-	timesPerWeek,
-	upsertTask
-}) => {
-	if (!color) return
-	return (
-		<Grid
-			container 
-			spacing={2}
-			direction="row"
-			justifyContent="right"
-			alignItems="center"
-		>
-			<IconButton
-				onClick={() => upsertTask({
-					timesPerWeek: timesPerWeek <= 0 ? 0 : timesPerWeek - 1
-				})}
-			>
-				<RemoveCircleIcon
-					style={{ fontSize: size }}
+export const TaskPerWeek = ({ size, color, isAssigned, task }) => {
+	const [, dragRef] = useDrag(() => ({
+		type: 'assign',
+		item: { task }
+	}))
+	const style = { fontSize: size, color }
+	return isAssigned
+		? (
+			<CheckCircleTwoToneIcon 
+				style={style}
+			/>
+		)
+		: (
+			<div ref={dragRef}>
+				<CircleTwoToneIcon 
+					style={{ ...style, cursor: 'move' }}
 				/>
-			</IconButton>
-			{
-				new Array(timesPerWeek).fill(null).map((n, i) => (
-					<CircleTwoToneIcon 
-						style={{ fontSize: size, color }}
-						key={i}
-					/>
-				))
-			}
-			<IconButton
-				onClick={() => upsertTask({
-					timesPerWeek: timesPerWeek + 1
-				})}
-			>
-				<AddCircleIcon
-					style={{ fontSize: size }}
-				/>
-			</IconButton>
-		</Grid>
-	)
+			</div>
+		)
 }

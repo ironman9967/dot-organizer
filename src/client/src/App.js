@@ -3,6 +3,9 @@ import './App.css'
 
 import { useEffect, useState } from 'react'
 
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+
 import io from 'socket.io-client'
 
 import { WeekGrid } from './components/Week/WeekGrid.js'
@@ -14,10 +17,10 @@ const socket = io({ path: '/socket' })
 // const upsertTimeslot = timeslot => socket.emit('upsert-timeslot', timeslot)
 // const removeTask = title => socket.emit('remove-task', title)
 const upsertTask = task => socket.emit('upsert-task', task)
-// const removeAssignment = assignmentToRemove => 
-// 	socket.emit('remove-assignment', assignmentToRemove)
-// const upsertAssignment = newAssignment => 
-// 	socket.emit('upsert-assignment', newAssignment)
+const removeAssignment = assignmentToRemove => 
+	socket.emit('remove-assignment', assignmentToRemove)
+const upsertAssignment = newAssignment => 
+	socket.emit('upsert-assignment', newAssignment)
 
 function App() {
 	const [ isConnected, setIsConnected ] = useState(socket.connected)
@@ -40,15 +43,19 @@ function App() {
 	}, [ isConnected, data ])
 	return (
 		<div className="App">
-			<WeekGrid
-				size={50}
-				data={data}
-			/>
-			<TaskList 
-				size={50}
-				data={data}
-				upsertTask={upsertTask}
-			/>
+			<DndProvider backend={HTML5Backend}>
+				<WeekGrid
+					size={50}
+					data={data}
+					removeAssignment={removeAssignment}
+					upsertAssignment={upsertAssignment}
+				/>
+				<TaskList 
+					size={50}
+					data={data}
+					upsertTask={upsertTask}
+				/>
+			</DndProvider>
 		</div>
 	)
 }

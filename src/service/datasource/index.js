@@ -70,13 +70,11 @@ export const createDatasource = ({ uuid }) => {
 		assignments: [{
 			dayOfWeekTitle: 'Sunday',
 			timeslotBegin: 8, 
-			taskTitle: 'Workout',
-			count: 1
+			taskTitle: 'Workout'
 		}, {
 			dayOfWeekTitle: 'Sunday',
 			timeslotBegin: 8, 
-			taskTitle: 'Laundry',
-			count: 1
+			taskTitle: 'Laundry'
 		}]
 	}
 	let data = initData
@@ -127,7 +125,7 @@ export const createDatasource = ({ uuid }) => {
 		}) => timeslotBegin === newAssignment.timeslotBegin
 			&& taskTitle === newAssignment.taskTitle)
 		if (!assignment) {
-			data.tasks.assignments(newAssignment)
+			data.assignments.push(newAssignment)
 		}
 	}
 	return {

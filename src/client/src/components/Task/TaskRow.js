@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid'
 
 import { TaskDot } from './TaskDot'
 import { TaskTitle } from './TaskTitle'
-import { TaskPerWeek } from './TaskPerWeek'
+import { TaskPerWeekList } from './TaskPerWeekList'
 
 export const TaskRow = ({ 
 	size, 
@@ -39,10 +39,16 @@ export const TaskRow = ({
 				<TaskTitle title={task.title} />
 			</Grid>
 			<Grid item xs={8}>
-				<TaskPerWeek 
+				<TaskPerWeekList 
 					size={size}
 					color={task.color}
+					task={task}
 					timesPerWeek={task.timesPerWeek}
+					assigned={
+						assignments.filter(({ 
+							taskTitle
+						}) => taskTitle === task.title).length
+					}
 					upsertTask={upsertThisTask}
 				/>
 			</Grid>
