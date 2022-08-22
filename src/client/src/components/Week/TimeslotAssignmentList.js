@@ -25,7 +25,7 @@ export const TimeslotAssignmentList = ({
 		<Paper
 			style={{ 
 				margin: 5,
-				height: 75
+				minHeight: 75
 			}}
 			elevation={isOver ? 24 : 3}
 			ref={dropRef}

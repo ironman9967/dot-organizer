@@ -42,17 +42,22 @@ export const WeekGrid = ({
 					) => order1 - order2)
 					.map(timeslot => {
 						const timeslotAssignments = ({ title }) =>
-							assignments.reduce((tmAssigns, assignment) => {
-								if (timeslot.begin === assignment.timeslotBegin
-									&& assignment.dayOfWeekTitle === title
-								) {
-									tmAssigns.push({
-										task: tasks.find(t => t.title === assignment.taskTitle),
-										assignment
-									})
-								}
-								return tmAssigns
-							}, [])
+							assignments
+								.reduce((tmAssigns, assignment) => {
+									if (timeslot.begin === assignment.timeslotBegin
+										&& assignment.dayOfWeekTitle === title
+									) {
+										tmAssigns.push({
+											task: tasks.find(t => t.title === assignment.taskTitle),
+											assignment
+										})
+									}
+									return tmAssigns
+								}, [])
+								.sort((
+									{ task: { order: order1 } }, 
+									{ task: { order: order2 } }
+								) => order1 - order2)
 						const assignThisTimeslot = ({
 							dayOfWeekTitle,
 							taskTitle
