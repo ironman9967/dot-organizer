@@ -16,6 +16,37 @@ export const WeekGrid = ({
 }) => {
 	if (!timeslots) return
 	const headers = [ 'Timeslots', ...daysOfWeek.map(({ title }) => title) ]
+	const timeslotAssignments = ({ begin }) => ({ title }) =>
+	assignments
+		.reduce((tmAssigns, assignment) => {
+			if (begin === assignment.timeslotBegin
+				&& assignment.dayOfWeekTitle === title
+			) {
+				tmAssigns.push({
+					task: tasks.find(t => t.title === assignment.taskTitle),
+					assignment
+				})
+			}
+			return tmAssigns
+		}, [])
+		.sort((
+			{ task: { order: order1 } }, 
+			{ task: { order: order2 } }
+		) => order1 - order2)
+	const assignThisTimeslot = ({ begin }) => ({
+		dayOfWeekTitle,
+		taskTitle
+	}) => upsertAssignment({
+		dayOfWeekTitle,
+		timeslotBegin: begin,
+		taskTitle
+	})
+	const unassignThisTimeslot = ({ begin }) => ({
+		taskTitle
+	}) => removeAssignment({
+		timeslotBegin: begin,
+		taskTitle
+	})
 	return (
 		<Paper
 			style={{ margin: 15 }}
@@ -40,76 +71,49 @@ export const WeekGrid = ({
 						{ order: order1 }, 
 						{ order: order2 }
 					) => order1 - order2)
-					.map(timeslot => {
-						const timeslotAssignments = ({ title }) =>
-							assignments
-								.reduce((tmAssigns, assignment) => {
-									if (timeslot.begin === assignment.timeslotBegin
-										&& assignment.dayOfWeekTitle === title
-									) {
-										tmAssigns.push({
-											task: tasks.find(t => t.title === assignment.taskTitle),
-											assignment
-										})
-									}
-									return tmAssigns
-								}, [])
-								.sort((
-									{ task: { order: order1 } }, 
-									{ task: { order: order2 } }
-								) => order1 - order2)
-						const assignThisTimeslot = ({
-							dayOfWeekTitle,
-							taskTitle
-						}) => upsertAssignment({
-							dayOfWeekTitle,
-							timeslotBegin: timeslot.begin,
-							taskTitle
-						})
-						const unassignThisTimeslot = ({
-							taskTitle
-						}) => removeAssignment({
-							timeslotBegin: timeslot.begin,
-							taskTitle
-						})
-						return (
+					.map(timeslot => (
+						<Grid
+							container
+							key={timeslot.title}
+							spacing={2}
+							columnSpacing={1}
+							rowSpacing={1}
+							direction="row"
+							justifyContent="center"
+							alignItems="center"
+						>
 							<Grid
-								container
-								key={timeslot.title}
-								spacing={2}
-								columnSpacing={1}
-								rowSpacing={1}
-								direction="row"
-								justifyContent="center"
-								alignItems="center"
+								style={{ margin: 5 }}
+								item
+								xs={1}
 							>
-								<Grid
-									style={{ margin: 5 }}
-									item
-									xs={1}
-								>
-									<TimeslotTitle title={timeslot.title} />
-								</Grid>{
-									daysOfWeek.map(dayOfWeek => 
-										<Grid
-											style={{ margin: 5 }}
-											item
-											key={dayOfWeek.title}
-											xs={1}
-										>
-											<TimeslotAssignmentList
-												size={size}
-												dayOfWeek={dayOfWeek}
-												timeslotAssignments={timeslotAssignments(dayOfWeek)}
-												unassignThisTimeslot={unassignThisTimeslot}
-												assignThisTimeslot={assignThisTimeslot}
-											/>
-										</Grid>
-									)
-								}
-							</Grid>
-						)
-					})
+								<TimeslotTitle title={timeslot.title} />
+							</Grid>{
+								daysOfWeek.map(dayOfWeek => 
+									<Grid
+										style={{ margin: 5 }}
+										item
+										key={dayOfWeek.title}
+										xs={1}
+									>
+										<TimeslotAssignmentList
+											size={size}
+											dayOfWeek={dayOfWeek}
+											timeslotAssignments={
+												timeslotAssignments(timeslot)(dayOfWeek)
+											}
+											unassignThisTimeslot={
+												unassignThisTimeslot(timeslot)
+											}
+											assignThisTimeslot={
+												assignThisTimeslot(timeslot)
+											}
+										/>
+									</Grid>
+								)
+							}
+						</Grid>
+					))
 			}
 		</Paper>
 	)
