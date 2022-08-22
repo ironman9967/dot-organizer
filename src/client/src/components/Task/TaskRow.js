@@ -28,17 +28,17 @@ export const TaskRow = ({
 			direction="row"
 			alignItems="center"
 		>
-			<Grid item xs="1">
+			<Grid item xs={1}>
 				<TaskDot
 					size={size}
 					color={task.color}
 					upsertTask={upsertThisTask}
 				/>
 			</Grid>
-			<Grid item xs="3">
+			<Grid item xs={3}>
 				<TaskTitle title={task.title} />
 			</Grid>
-			<Grid item xs="8">
+			<Grid item xs={8}>
 				<TaskPerWeek 
 					size={size}
 					color={task.color}

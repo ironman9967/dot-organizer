@@ -4,20 +4,19 @@ import React from 'react'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 
-export const DayOfWeekHeader = ({ margin, dayName }) => {
-	if (!dayName) return
+export const DayOfWeekHeader = ({ margin, title }) => {
+	if (!title) return
 	return (
 		<Grid
 			style={{ margin }}
 			item
-			key={dayName}
 			xs={1}
 		>
 			<Paper
 				style={{ margin }}
 				elevation={6}
 			>
-				{dayName}
+				{title}
 			</Paper>
 		</Grid>
 	)

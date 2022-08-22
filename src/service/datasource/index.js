@@ -52,9 +52,31 @@ export const createDatasource = ({ uuid }) => {
 			color: '#00ff00',
 			timesPerWeek: 1
 		}]),
+		daysOfWeek: [{
+			title: 'Sunday'
+		}, {
+			title: 'Monday'
+		}, {
+			title: 'Tuesday'
+		}, {
+			title: 'Wednesday'
+		}, {
+			title: 'Thursday'
+		}, {
+			title: 'Friday'
+		}, {
+			title: 'Saturday'
+		}],
 		assignments: [{
+			dayOfWeekTitle: 'Sunday',
 			timeslotBegin: 8, 
-			taskTitle: 'Workout'
+			taskTitle: 'Workout',
+			count: 1
+		}, {
+			dayOfWeekTitle: 'Sunday',
+			timeslotBegin: 8, 
+			taskTitle: 'Laundry',
+			count: 1
 		}]
 	}
 	let data = initData

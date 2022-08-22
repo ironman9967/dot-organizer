@@ -31,7 +31,7 @@ export const TaskDot = ({
 					}
 				}}
 			/>
-			{isSelectingColor &&
+			{isSelectingColor && upsertTask &&
 				<div style={{ 
 					position: 'absolute',
 					// left: '3.6%'
