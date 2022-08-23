@@ -13,7 +13,6 @@ export const TaskRow = ({
 	assignments,
 	upsertTask
 }) => {
-	if (!task) return
 	const upsertThisTask = taskUpdates => {
 		upsertTask({
 			...task,
@@ -25,23 +24,34 @@ export const TaskRow = ({
 		<Grid 
 			container 
 			spacing={2}
+			columnSpacing={1}
+			rowSpacing={1}
 			direction="row"
 			alignItems="center"
 		>
-			<Grid item xs={1}>
+			<Grid 
+				item
+				xs={1}
+			>
 				<TaskDot
 					size={size}
 					color={task.color}
 					upsertTask={upsertThisTask}
 				/>
 			</Grid>
-			<Grid item xs={3}>
+			<Grid 
+				item
+				xs={3}
+			>
 				<TaskTitle 
 					title={task.title}
 					upsertTask={upsertThisTask}
 				/>
 			</Grid>
-			<Grid item xs={8}>
+			<Grid 
+				item
+				xs={8}
+			>
 				<TaskPerWeekList 
 					size={size}
 					color={task.color}

@@ -55,26 +55,31 @@ export const WeekGrid = ({
 	})
 	return (
 		<Paper
-			style={{ margin: 15 }}
+			style={{ 
+				margin: 5,
+				padding: 5
+			}}
 			elevation={24}
 		>
 			<Grid
 				container
 				spacing={2}
-				columns={10}
+				columns={9}
 				columnSpacing={1}
 				rowSpacing={1}
 				direction="row"
-				justifyContent="center"
 				alignItems="center"
 			>{
 				headers.map((title, i) => (
-					<DayOfWeekHeader 
+					<Grid
 						key={title}
-						margin={5}
-						title={title}
+						item
 						xs={i === 0 ? 2 : 1}
-					/>
+					>
+						<DayOfWeekHeader 
+							title={title}
+						/>
+					</Grid>
 				))
 			}
 			</Grid>{
@@ -88,15 +93,13 @@ export const WeekGrid = ({
 							container
 							key={timeslot._key}
 							spacing={2}
-							columns={10}
+							columns={9}
 							columnSpacing={1}
 							rowSpacing={1}
 							direction="row"
-							justifyContent="center"
 							alignItems="center"
 						>
 							<Grid
-								style={{ margin: 5 }}
 								item
 								xs={2}
 							>
@@ -107,7 +110,6 @@ export const WeekGrid = ({
 							</Grid>{
 								daysOfWeek.map(dayOfWeek => 
 									<Grid
-										style={{ margin: 5 }}
 										item
 										key={dayOfWeek.title}
 										xs={1}

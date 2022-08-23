@@ -13,14 +13,12 @@ export const TaskDot = ({
 	upsertTask
 }) => {
 	const [ isSelectingColor, setIsSelectingColor ] = useState(false)
-	if (!color) return 
 	return (
 		<div>
 			<CircleTwoToneIcon 
 				style={{ 
 					fontSize: size, 
-					color,
-					// paddingTop: 4.05
+					color
 				}}
 				onClick={({ target: { localName } }) => {
 					if (isSelectingColor || localName !== 'circle') {
@@ -32,19 +30,20 @@ export const TaskDot = ({
 				}}
 			/>
 			{isSelectingColor && upsertTask &&
-				<div style={{ 
-					position: 'absolute',
-					// left: '3.6%'
-				}}>
-					<Paper elevation={24} >
-						<GithubPicker
-							onChangeComplete={({ hex: color }) => {
-								upsertTask({ color })
-								setIsSelectingColor(false)
-							}}
-						/>
-					</Paper>
-				</div>
+				<Paper 
+					style={{ 
+						zIndex: 1,
+						position: 'absolute'
+					}}
+					elevation={24}
+				>
+					<GithubPicker
+						onChangeComplete={({ hex: color }) => {
+							upsertTask({ color })
+							setIsSelectingColor(false)
+						}}
+					/>
+				</Paper>
 			}
 		</div>
 	)

@@ -17,7 +17,6 @@ export const TaskPerWeekList = ({
 	assigned,
 	upsertTask
 }) => {
-	if (!color) return
 	return (
 		<Grid
 			container 

@@ -1,23 +1,20 @@
 
 import React from 'react'
 
-import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
+import TextField from '@mui/material/TextField'
 
-export const DayOfWeekHeader = ({ margin, title, xs }) => {
-	if (!title) return
+export const DayOfWeekHeader = ({ title }) => {
 	return (
-		<Grid
-			style={{ margin }}
-			item
-			xs={xs}
+		<Paper
+			style={{ margin: 10 }}
+			elevation={6}
 		>
-			<Paper
-				style={{ margin }}
-				elevation={6}
-			>
-				{title}
-			</Paper>
-		</Grid>
+			<TextField
+				fullWidth
+				defaultValue={title}
+				InputProps={{ readOnly: true }}
+			/>
+		</Paper>
 	)
 }

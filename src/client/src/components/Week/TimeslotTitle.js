@@ -11,7 +11,7 @@ export const TimeslotTitle = ({
 }) => {
 	return (
 		<Paper
-			style={{ margin: 5 }}
+			style={{ margin: 10 }}
 			elevation={6}
 		>
 			<EditableTitle

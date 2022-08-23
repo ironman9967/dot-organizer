@@ -10,7 +10,7 @@ export const EditableTitle = ({
 }) => {
 	const [ editedTitle, setEditedTitle ] = useState(title)
 	return (
-		<TextField
+		<TextField	
 			{ ...props }
 			defaultValue={title}
 			onChange={({ target: { value } }) => setEditedTitle(value)}
