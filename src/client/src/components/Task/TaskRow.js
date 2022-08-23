@@ -36,7 +36,10 @@ export const TaskRow = ({
 				/>
 			</Grid>
 			<Grid item xs={3}>
-				<TaskTitle title={task.title} />
+				<TaskTitle 
+					title={task.title}
+					upsertTask={upsertThisTask}
+				/>
 			</Grid>
 			<Grid item xs={8}>
 				<TaskPerWeekList 

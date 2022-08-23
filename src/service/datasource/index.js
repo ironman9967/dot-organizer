@@ -1,53 +1,64 @@
 
 export const createDatasource = ({ uuid }) => {
-	const addMetaToAll = objs => objs.map((obj, order) => ({
+	const addMeta = obj => ({
 		_key: uuid(),
-		order,
 		...obj
-	}))
+	})
+	const addMetaToAll = objs => objs.map(addMeta)
 	const initData = {
 		timeslots: addMetaToAll([{
+			order: 0,
 			title: 'morning',
 			begin: 8, //8:00am
 			duration: 14 // 3.5h (14 * 15m)
 		}, {
+			order: 1,
 			title: 'lunch',
 			begin: 1130, //11:30am
 			duration: 6 // 1.5h
 		}, {
+			order: 2,
 			title: 'afternoon',
 			begin: 1300, //1:00pm
 			duration: 16 // 4h
 		}, {
+			order: 3,
 			title: 'evening',
 			begin: 1700, //5:00pm
 			duration: 14 // 3.5h
 		}, {
+			order: 4,
 			title: `after kid's bedtime`,
 			begin: 2030, //8:30pm
 			duration: 12 // 3h
 		}]),
 		tasks: addMetaToAll([{
+			order: 0,
 			title: 'Family dinner',
 			color: '#000000',
 			timesPerWeek: 3
 		}, {
+			order: 1,
 			title: 'Workout',
 			color: '#00ffff',
 			timesPerWeek: 6
 		}, {
+			order: 2,
 			title: `Isaac's school`,
 			color: '#ffff00',
 			timesPerWeek: 5
 		}, {
+			order: 3,
 			title: `Ellie's school`,
 			color: '#0000ff',
 			timesPerWeek: 5
 		}, {
+			order: 4,
 			title: `Laundry`,
 			color: '#ff0000',
 			timesPerWeek: 2
 		}, {
+			order: 5,
 			title: `Me time`,
 			color: '#00ff00',
 			timesPerWeek: 1
@@ -92,7 +103,7 @@ export const createDatasource = ({ uuid }) => {
 		if (timeslot) {
 			await removeTimeslot(timeslot._key)
 		}
-		data.timeslots.push(newTimeslot)
+		data.timeslots.push(addMeta(newTimeslot))
 	}
 	const removeTask = async keyToRemove => 
 		data.tasks = data.tasks.reduce((newTasks, task) => {
@@ -108,7 +119,7 @@ export const createDatasource = ({ uuid }) => {
 		if (task) {
 			await removeTask(task._key)
 		}
-		data.tasks.push(newTask)
+		data.tasks.push(addMeta(newTask))
 	}
 	const removeAssignment = async assignmentToRemove => 
 		data.assignments = data.assignments.reduce((newAssignments, assignment) => {

@@ -31,9 +31,13 @@ const init = async () => {
 		switch (command.trim()) {
 			case 'stop':
 				console.log('stopping...')
+				process.stdin.removeAllListeners()
 				await stopServer()
 				await stopEngine()
 				console.log('stopped')
+				process.exit(0)
+			case 'output-data':
+				console.log(JSON.stringify(await datasource.getData(), void 0, 2))
 				break
 		}
 	})

@@ -80,7 +80,7 @@ export const createServer = ({
 				server: { uri: server.info.uri }
 			}
 		},
-		stopServer: () => {
+		stopServer: async () => {
 			unsubEngineUpdate()
 			server.stop({ timeout: 60 * 1000 })
 		}

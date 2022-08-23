@@ -10,12 +10,12 @@ export const TimeslotAssignmentList = ({
 	size,
 	dayOfWeek,
 	timeslotAssignments,
-	unassignThisTimeslot,
-	assignThisTimeslot
+	unassignTimeslot,
+	assignTimeslot
 }) => {
 	const [{ isOver }, dropRef] = useDrop({
         accept: 'assign',
-        drop: ({ task }) => assignThisTimeslot({
+        drop: ({ task }) => assignTimeslot({
 			dayOfWeekTitle: dayOfWeek.title,
 			taskTitle: task.title
 		}),
@@ -36,7 +36,7 @@ export const TimeslotAssignmentList = ({
 					size={size}
 					color={color}
 					taskTitle={title}
-					unassignThisTimeslot={unassignThisTimeslot}
+					unassignTimeslot={unassignTimeslot}
 				/>
 			))
 		}</Paper>

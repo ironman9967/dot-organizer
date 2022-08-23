@@ -11,13 +11,13 @@ import { TimeslotAssignmentList } from './TimeslotAssignmentList'
 export const WeekGrid = ({ 
 	size, 
 	data: { tasks, timeslots, daysOfWeek, assignments },
+	upsertTimeslot,
 	removeAssignment,
 	upsertAssignment
 }) => {
 	if (!timeslots) return
 	const headers = [ 'Timeslots', ...daysOfWeek.map(({ title }) => title) ]
-	const timeslotAssignments = ({ begin }) => ({ title }) =>
-	assignments
+	const timeslotAssignments = ({ begin }) => ({ title }) => assignments
 		.reduce((tmAssigns, assignment) => {
 			if (begin === assignment.timeslotBegin
 				&& assignment.dayOfWeekTitle === title
@@ -33,6 +33,12 @@ export const WeekGrid = ({
 			{ task: { order: order1 } }, 
 			{ task: { order: order2 } }
 		) => order1 - order2)
+	const upsertThisTimeslot = timeslot => timeslotUpdates => 
+		upsertTimeslot({
+			...timeslot,
+			...timeslotUpdates,
+			_key: timeslot._key
+		})
 	const assignThisTimeslot = ({ begin }) => ({
 		dayOfWeekTitle,
 		taskTitle
@@ -61,8 +67,13 @@ export const WeekGrid = ({
 				justifyContent="center"
 				alignItems="center"
 			>{
-				headers.map(title => (
-					<DayOfWeekHeader key={title} margin={5} title={title} />
+				headers.map((title, i) => (
+					<DayOfWeekHeader 
+						key={title}
+						margin={5}
+						title={title}
+						xs={i === 0 ? 2 : 1}
+					/>
 				))
 			}
 			</Grid>{
@@ -74,7 +85,7 @@ export const WeekGrid = ({
 					.map(timeslot => (
 						<Grid
 							container
-							key={timeslot.title}
+							key={timeslot._key}
 							spacing={2}
 							columnSpacing={1}
 							rowSpacing={1}
@@ -85,9 +96,12 @@ export const WeekGrid = ({
 							<Grid
 								style={{ margin: 5 }}
 								item
-								xs={1}
+								xs={2}
 							>
-								<TimeslotTitle title={timeslot.title} />
+								<TimeslotTitle 
+									title={timeslot.title}
+									upsertTimeslot={upsertThisTimeslot(timeslot)}
+								/>
 							</Grid>{
 								daysOfWeek.map(dayOfWeek => 
 									<Grid
@@ -102,10 +116,10 @@ export const WeekGrid = ({
 											timeslotAssignments={
 												timeslotAssignments(timeslot)(dayOfWeek)
 											}
-											unassignThisTimeslot={
+											unassignTimeslot={
 												unassignThisTimeslot(timeslot)
 											}
-											assignThisTimeslot={
+											assignTimeslot={
 												assignThisTimeslot(timeslot)
 											}
 										/>

@@ -3,16 +3,22 @@ import React from 'react'
 
 import Paper from '@mui/material/Paper'
 
-export const TimeslotTitle = ({ title }) => {
-	if (!title) return
+import { EditableTitle } from '../common/EditableTitle'
+
+export const TimeslotTitle = ({ 
+	title,
+	upsertTimeslot
+}) => {
 	return (
 		<Paper
-			style={{ 
-				margin: 5
-			}}
+			style={{ margin: 5 }}
 			elevation={6}
 		>
-			{title}
+			<EditableTitle
+				fullWidth
+				title={title}
+				onEdit={newTitle => upsertTimeslot({ title: newTitle })}
+			/>
 		</Paper>
 	)
 }

@@ -14,7 +14,7 @@ import { TaskList } from './components/Task/TaskList.js'
 const socket = io({ path: '/socket' })
 
 // const removeTimeslot = order => socket.emit('remove-timeslot', order)
-// const upsertTimeslot = timeslot => socket.emit('upsert-timeslot', timeslot)
+const upsertTimeslot = timeslot => socket.emit('upsert-timeslot', timeslot)
 // const removeTask = title => socket.emit('remove-task', title)
 const upsertTask = task => socket.emit('upsert-task', task)
 const removeAssignment = assignmentToRemove => 
@@ -47,6 +47,7 @@ function App() {
 				<WeekGrid
 					size={50}
 					data={data}
+					upsertTimeslot={upsertTimeslot}
 					removeAssignment={removeAssignment}
 					upsertAssignment={upsertAssignment}
 				/>

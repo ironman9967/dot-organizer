@@ -7,12 +7,12 @@ export const TimeslotAssignment = ({
 	size,
 	color,
 	taskTitle,
-	unassignThisTimeslot
+	unassignTimeslot
 }) => {
 	return (
 		<CircleTwoToneIcon 
 			style={{ fontSize: size, color }}
-			onDoubleClick={() => unassignThisTimeslot({ taskTitle })}
+			onDoubleClick={() => unassignTimeslot({ taskTitle })}
 		/>
 	)
 }

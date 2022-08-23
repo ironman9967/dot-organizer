@@ -33,7 +33,7 @@ export const TaskList = ({
 						<Grid
 							style={style}
 							item
-							key={task.title}
+							key={task._key}
 							xs={12}
 						>
 							<Paper

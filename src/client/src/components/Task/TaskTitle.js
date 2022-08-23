@@ -1,11 +1,24 @@
 
 import React from 'react'
 
-export const TaskTitle = ({ title }) => {
-	if (!title) return
+import Paper from '@mui/material/Paper'
+
+import { EditableTitle } from '../common/EditableTitle'
+
+export const TaskTitle = ({ 
+	title,
+	upsertTask
+}) => {
 	return (
-		<div style={{ textAlign: 'left' }}>
-			{title}
-		</div>
+		<Paper
+			style={{ margin: 5 }}
+			elevation={6}
+		>
+			<EditableTitle
+				fullWidth
+				title={title}
+				onEdit={newTitle => upsertTask({ title: newTitle })}
+			/>
+		</Paper>
 	)
 }
