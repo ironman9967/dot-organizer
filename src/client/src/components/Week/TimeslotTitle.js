@@ -6,7 +6,9 @@ import Paper from '@mui/material/Paper'
 import { EditableTitle } from '../common/EditableTitle'
 
 export const TimeslotTitle = ({ 
+	size,
 	title,
+	removeTimeslot,
 	upsertTimeslot
 }) => {
 	return (
@@ -16,8 +18,10 @@ export const TimeslotTitle = ({
 		>
 			<EditableTitle
 				fullWidth
+				size={size}
 				title={title}
 				onEdit={newTitle => upsertTimeslot({ title: newTitle })}
+				onClick={() => removeTimeslot()}
 			/>
 		</Paper>
 	)

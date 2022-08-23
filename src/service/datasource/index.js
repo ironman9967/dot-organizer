@@ -8,29 +8,19 @@ export const createDatasource = ({ uuid }) => {
 	const initData = {
 		timeslots: addMetaToAll([{
 			order: 0,
-			title: 'morning',
-			begin: 8, //8:00am
-			duration: 14 // 3.5h (14 * 15m)
+			title: 'morning'
 		}, {
 			order: 1,
-			title: 'lunch',
-			begin: 1130, //11:30am
-			duration: 6 // 1.5h
+			title: 'lunch'
 		}, {
 			order: 2,
-			title: 'afternoon',
-			begin: 1300, //1:00pm
-			duration: 16 // 4h
+			title: 'afternoon'
 		}, {
 			order: 3,
-			title: 'evening',
-			begin: 1700, //5:00pm
-			duration: 14 // 3.5h
+			title: 'evening'
 		}, {
 			order: 4,
-			title: `after kid's bedtime`,
-			begin: 2030, //8:30pm
-			duration: 12 // 3h
+			title: `after kid's bedtime`
 		}]),
 		tasks: addMetaToAll([{
 			order: 0,
@@ -80,22 +70,31 @@ export const createDatasource = ({ uuid }) => {
 		}],
 		assignments: [{
 			dayOfWeekTitle: 'Sunday',
-			timeslotBegin: 8, 
+			timeslotTitle: 'morning', 
 			taskTitle: 'Workout'
 		}, {
 			dayOfWeekTitle: 'Sunday',
-			timeslotBegin: 8, 
+			timeslotTitle: 'morning', 
 			taskTitle: 'Laundry'
 		}]
 	}
 	let data = initData
-	const removeTimeslot = async keyToRemove => 
+	const removeTimeslot = async keyToRemove => {
 		data.timeslots = data.timeslots.reduce((newTimeslots, timeslot) => {
 			if (timeslot._key !== keyToRemove) {
 				newTimeslots.push(timeslot)
 			}
+			else {
+				data.assignments
+					.filter(({ timeslotTitle }) => timeslotTitle === timeslot.title)
+					.forEach(({ taskTitle, timeslotTitle }) => removeAssignment({ 
+						taskTitle,
+						timeslotTitle
+					}))				
+			}
 			return newTimeslots
 		}, [])
+	}
 	const upsertTimeslot = async newTimeslot => {
 		const timeslot = data.timeslots.find(({ 
 			_key
@@ -103,15 +102,27 @@ export const createDatasource = ({ uuid }) => {
 		if (timeslot) {
 			await removeTimeslot(timeslot._key)
 		}
+		if (!newTimeslot.order) {
+			newTimeslot.order = data.tasks.length
+		}
 		data.timeslots.push(addMeta(newTimeslot))
 	}
-	const removeTask = async keyToRemove => 
+	const removeTask = async keyToRemove => {
 		data.tasks = data.tasks.reduce((newTasks, task) => {
 			if (task._key !== keyToRemove) {
 				newTasks.push(task)
 			}
+			else {
+				data.assignments
+					.filter(({ taskTitle }) => taskTitle === task.title)
+					.forEach(({ taskTitle, timeslotTitle }) => removeAssignment({ 
+						taskTitle,
+						timeslotTitle
+					}))
+			}
 			return newTasks
 		}, [])
+	}
 	const upsertTask = async newTask => {
 		const task = data.tasks.find(({ 
 			_key
@@ -119,21 +130,24 @@ export const createDatasource = ({ uuid }) => {
 		if (task) {
 			await removeTask(task._key)
 		}
+		if (!newTask.order) {
+			newTask.order = data.tasks.length
+		}
 		data.tasks.push(addMeta(newTask))
 	}
 	const removeAssignment = async assignmentToRemove => 
 		data.assignments = data.assignments.reduce((newAssignments, assignment) => {
 			if (assignment.taskTitle !== assignmentToRemove.taskTitle
-				|| assignment.timeslotBegin !== assignmentToRemove.timeslotBegin) {
+				|| assignment.timeslotTitle !== assignmentToRemove.timeslotTitle) {
 				newAssignments.push(assignment)
 			}
 			return newAssignments
 		}, [])
 	const upsertAssignment = async newAssignment => {
 		const assignment = data.assignments.find(({ 
-			timeslotBegin,
+			timeslotTitle,
 			taskTitle
-		}) => timeslotBegin === newAssignment.timeslotBegin
+		}) => timeslotTitle === newAssignment.timeslotTitle
 			&& taskTitle === newAssignment.taskTitle)
 		if (!assignment) {
 			data.assignments.push(newAssignment)

@@ -4,6 +4,8 @@ import React from 'react'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 
+import AddCircleIcon from '@mui/icons-material/AddCircle'
+
 import { DayOfWeekHeader } from './DayOfWeekHeader'
 import { TimeslotTitle } from './TimeslotTitle'
 import { TimeslotAssignmentList } from './TimeslotAssignmentList'
@@ -11,15 +13,16 @@ import { TimeslotAssignmentList } from './TimeslotAssignmentList'
 export const WeekGrid = ({ 
 	size, 
 	data: { tasks, timeslots, daysOfWeek, assignments },
+	removeTimeslot,
 	upsertTimeslot,
 	removeAssignment,
 	upsertAssignment
 }) => {
 	if (!timeslots) return
 	const headers = [ 'Timeslots', ...daysOfWeek.map(({ title }) => title) ]
-	const timeslotAssignments = ({ begin }) => ({ title }) => assignments
+	const timeslotAssignments = ({ title: timeslotTitle }) => ({ title }) => assignments
 		.reduce((tmAssigns, assignment) => {
-			if (begin === assignment.timeslotBegin
+			if (timeslotTitle === assignment.timeslotTitle
 				&& assignment.dayOfWeekTitle === title
 			) {
 				tmAssigns.push({
@@ -33,24 +36,25 @@ export const WeekGrid = ({
 			{ task: { order: order1 } }, 
 			{ task: { order: order2 } }
 		) => order1 - order2)
+	const removeThisTimeslot = _key => () => removeTimeslot(_key)
 	const upsertThisTimeslot = timeslot => timeslotUpdates => 
 		upsertTimeslot({
 			...timeslot,
 			...timeslotUpdates,
 			_key: timeslot._key
 		})
-	const assignThisTimeslot = ({ begin }) => ({
+	const assignThisTimeslot = ({ title }) => ({
 		dayOfWeekTitle,
 		taskTitle
 	}) => upsertAssignment({
 		dayOfWeekTitle,
-		timeslotBegin: begin,
+		timeslotTitle: title,
 		taskTitle
 	})
-	const unassignThisTimeslot = ({ begin }) => ({
+	const unassignThisTimeslot = ({ title }) => ({
 		taskTitle
 	}) => removeAssignment({
-		timeslotBegin: begin,
+		timeslotTitle: title,
 		taskTitle
 	})
 	return (
@@ -104,7 +108,9 @@ export const WeekGrid = ({
 								xs={2}
 							>
 								<TimeslotTitle 
+									size={size}
 									title={timeslot.title}
+									removeTimeslot={removeThisTimeslot(timeslot._key)}
 									upsertTimeslot={upsertThisTimeslot(timeslot)}
 								/>
 							</Grid>{
@@ -133,6 +139,16 @@ export const WeekGrid = ({
 						</Grid>
 					))
 			}
+			<AddCircleIcon 
+				style={{
+					padding: 5,
+					margin: 5,
+					fontSize: size
+				}}
+				onClick={() => console.log({
+					title: 'New timeslot'
+				})}
+			/>
 		</Paper>
 	)
 }

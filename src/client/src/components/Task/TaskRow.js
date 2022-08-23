@@ -11,15 +11,9 @@ export const TaskRow = ({
 	size, 
 	task, 
 	assignments,
+	removeTask,
 	upsertTask
 }) => {
-	const upsertThisTask = taskUpdates => {
-		upsertTask({
-			...task,
-			...taskUpdates,
-			_key: task._key
-		})
-	}
 	return (
 		<Grid 
 			container 
@@ -36,7 +30,7 @@ export const TaskRow = ({
 				<TaskDot
 					size={size}
 					color={task.color}
-					upsertTask={upsertThisTask}
+					upsertTask={upsertTask}
 				/>
 			</Grid>
 			<Grid 
@@ -44,8 +38,10 @@ export const TaskRow = ({
 				xs={3}
 			>
 				<TaskTitle 
+					size={size}
 					title={task.title}
-					upsertTask={upsertThisTask}
+					removeTask={removeTask}
+					upsertTask={upsertTask}
 				/>
 			</Grid>
 			<Grid 
@@ -62,7 +58,7 @@ export const TaskRow = ({
 							taskTitle
 						}) => taskTitle === task.title).length
 					}
-					upsertTask={upsertThisTask}
+					upsertTask={upsertTask}
 				/>
 			</Grid>
 		</Grid>

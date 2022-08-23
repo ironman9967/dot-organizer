@@ -13,9 +13,9 @@ import { TaskList } from './components/task/TaskList.js'
 
 const socket = io({ path: '/socket' })
 
-// const removeTimeslot = order => socket.emit('remove-timeslot', order)
+const removeTimeslot = order => socket.emit('remove-timeslot', order)
 const upsertTimeslot = timeslot => socket.emit('upsert-timeslot', timeslot)
-// const removeTask = title => socket.emit('remove-task', title)
+const removeTask = title => socket.emit('remove-task', title)
 const upsertTask = task => socket.emit('upsert-task', task)
 const removeAssignment = assignmentToRemove => 
 	socket.emit('remove-assignment', assignmentToRemove)
@@ -47,6 +47,7 @@ function App() {
 				<WeekGrid
 					size={50}
 					data={data}
+					removeTimeslot={removeTimeslot}
 					upsertTimeslot={upsertTimeslot}
 					removeAssignment={removeAssignment}
 					upsertAssignment={upsertAssignment}
@@ -54,6 +55,7 @@ function App() {
 				<TaskList 
 					size={50}
 					data={data}
+					removeTask={removeTask}
 					upsertTask={upsertTask}
 				/>
 			</DndProvider>
