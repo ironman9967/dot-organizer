@@ -61,6 +61,7 @@ export const WeekGrid = ({
 			<Grid
 				container
 				spacing={2}
+				columns={10}
 				columnSpacing={1}
 				rowSpacing={1}
 				direction="row"
@@ -87,6 +88,7 @@ export const WeekGrid = ({
 							container
 							key={timeslot._key}
 							spacing={2}
+							columns={10}
 							columnSpacing={1}
 							rowSpacing={1}
 							direction="row"

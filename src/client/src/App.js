@@ -8,8 +8,8 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import io from 'socket.io-client'
 
-import { WeekGrid } from './components/Week/WeekGrid.js'
-import { TaskList } from './components/Task/TaskList.js'
+import { WeekGrid } from './components/week/WeekGrid.js'
+import { TaskList } from './components/task/TaskList.js'
 
 const socket = io({ path: '/socket' })
 
