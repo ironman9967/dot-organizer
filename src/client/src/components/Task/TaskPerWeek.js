@@ -8,7 +8,7 @@ import CheckCircleTwoToneIcon from '@mui/icons-material/CheckCircleTwoTone'
 export const TaskPerWeek = ({ size, color, isAssigned, task }) => {
 	const [, dragRef] = useDrag(() => ({
 		type: 'assign',
-		item: { task }
+		item: { taskKey: task._key }
 	}))
 	const style = { fontSize: size, color }
 	return isAssigned

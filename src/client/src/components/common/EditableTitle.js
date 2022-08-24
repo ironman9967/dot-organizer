@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 
 export const EditableTitle = ({ 
 	size,
@@ -30,7 +30,6 @@ export const EditableTitle = ({
 			>
 				<TextField
 					{ ...props }
-					style={{ marginLeft: 5 }}
 					defaultValue={title}
 					onChange={({ target: { value } }) => setEditedTitle(value)}
 					onBlur={() => title !== editedTitle
@@ -40,15 +39,15 @@ export const EditableTitle = ({
 				/>
 			</Grid>
 			<Grid 
-				style={{ paddingTop: 0 }}
+				style={{ paddingTop: 0, paddingRight: 16 }}
 				item
 				xs={3}
 			>
 				<IconButton
 					onClick={onClick}
 				>
-					<RemoveCircleIcon
-						style={{ fontSize: size }}
+					<DeleteTwoToneIcon
+						style={{ fontSize: size * 0.75 }}
 					/>
 				</IconButton>
 			</Grid>

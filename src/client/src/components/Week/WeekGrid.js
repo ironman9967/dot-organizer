@@ -19,14 +19,16 @@ export const WeekGrid = ({
 	upsertAssignment
 }) => {
 	if (!timeslots) return
+
 	const headers = [ 'Timeslots', ...daysOfWeek.map(({ title }) => title) ]
-	const timeslotAssignments = ({ title: timeslotTitle }) => ({ title }) => assignments
+
+	const timeslotAssignments = ({ _key: timeslotKey }) => ({ title }) => assignments
 		.reduce((tmAssigns, assignment) => {
-			if (timeslotTitle === assignment.timeslotTitle
+			if (assignment.timeslotKey === timeslotKey
 				&& assignment.dayOfWeekTitle === title
 			) {
 				tmAssigns.push({
-					task: tasks.find(t => t.title === assignment.taskTitle),
+					task: tasks.find(t => t._key === assignment.taskKey),
 					assignment
 				})
 			}
@@ -36,6 +38,7 @@ export const WeekGrid = ({
 			{ task: { order: order1 } }, 
 			{ task: { order: order2 } }
 		) => order1 - order2)
+
 	const removeThisTimeslot = _key => () => removeTimeslot(_key)
 	const upsertThisTimeslot = timeslot => timeslotUpdates => 
 		upsertTimeslot({
@@ -43,20 +46,7 @@ export const WeekGrid = ({
 			...timeslotUpdates,
 			_key: timeslot._key
 		})
-	const assignThisTimeslot = ({ title }) => ({
-		dayOfWeekTitle,
-		taskTitle
-	}) => upsertAssignment({
-		dayOfWeekTitle,
-		timeslotTitle: title,
-		taskTitle
-	})
-	const unassignThisTimeslot = ({ title }) => ({
-		taskTitle
-	}) => removeAssignment({
-		timeslotTitle: title,
-		taskTitle
-	})
+
 	return (
 		<Paper
 			style={{ 
@@ -122,16 +112,13 @@ export const WeekGrid = ({
 									>
 										<TimeslotAssignmentList
 											size={size}
+											timeslot={timeslot}
 											dayOfWeek={dayOfWeek}
 											timeslotAssignments={
 												timeslotAssignments(timeslot)(dayOfWeek)
 											}
-											unassignTimeslot={
-												unassignThisTimeslot(timeslot)
-											}
-											assignTimeslot={
-												assignThisTimeslot(timeslot)
-											}
+											removeAssignment={removeAssignment}
+											upsertAssignment={upsertAssignment}
 										/>
 									</Grid>
 								)
@@ -145,7 +132,7 @@ export const WeekGrid = ({
 					margin: 5,
 					fontSize: size
 				}}
-				onClick={() => console.log({
+				onClick={() => upsertTimeslot({
 					title: 'New timeslot'
 				})}
 			/>

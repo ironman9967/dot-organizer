@@ -5,7 +5,7 @@ import Paper from '@mui/material/Paper'
 
 import CircleTwoToneIcon from '@mui/icons-material/CircleTwoTone'
 
-import { GithubPicker } from 'react-color'
+import { SwatchesPicker } from 'react-color'
 
 export const TaskDot = ({ 
 	size,
@@ -37,7 +37,7 @@ export const TaskDot = ({
 					}}
 					elevation={24}
 				>
-					<GithubPicker
+					<SwatchesPicker
 						onChangeComplete={({ hex: color }) => {
 							upsertTask({ color })
 							setIsSelectingColor(false)

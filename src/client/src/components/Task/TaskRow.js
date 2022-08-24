@@ -55,8 +55,8 @@ export const TaskRow = ({
 					timesPerWeek={task.timesPerWeek}
 					assigned={
 						assignments.filter(({ 
-							taskTitle
-						}) => taskTitle === task.title).length
+							taskKey
+						}) => taskKey === task._key).length
 					}
 					upsertTask={upsertTask}
 				/>

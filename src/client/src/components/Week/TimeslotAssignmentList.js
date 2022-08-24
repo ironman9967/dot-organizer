@@ -8,35 +8,48 @@ import { TimeslotAssignment } from './TimeslotAssignment'
 
 export const TimeslotAssignmentList = ({ 
 	size,
+	timeslot,
 	dayOfWeek,
 	timeslotAssignments,
-	unassignTimeslot,
-	assignTimeslot
+	removeAssignment,
+	upsertAssignment
 }) => {
 	const [{ isOver }, dropRef] = useDrop({
         accept: 'assign',
-        drop: ({ task }) => assignTimeslot({
-			dayOfWeekTitle: dayOfWeek.title,
-			taskTitle: task.title
-		}),
+        drop: assignment => {
+			if (assignment.dayOfWeekTitle) {
+				removeAssignment(assignment)
+			}
+			upsertAssignment({
+				dayOfWeekTitle: dayOfWeek.title,
+				timeslotKey: timeslot._key,
+				taskKey: assignment.taskKey
+			})
+		},
         collect: monitor => ({ isOver: monitor.isOver() })
     })
 	return (
 		<Paper
 			style={{ 
 				margin: 10,
-				minHeight: 100
+				minHeight: 100,
+				display: 'flex', 
+				flexFlow: 'row wrap',
+				justifyContent: 'space-evenly'
 			}}
-			elevation={isOver ? 24 : 3}
 			ref={dropRef}
+			elevation={isOver ? 24 : 3}
 		>{timeslotAssignments.length > 0 &&
-			timeslotAssignments.map(({ task: { title, color } }) => (
-				<TimeslotAssignment 
-					key={title}
+			timeslotAssignments.map(({ 
+				task: { _key, color },
+				assignment
+			}) => (
+				<TimeslotAssignment
+					key={_key}
 					size={size}
 					color={color}
-					taskTitle={title}
-					unassignTimeslot={unassignTimeslot}
+					assignment={assignment}
+					removeAssignment={removeAssignment}
 				/>
 			))
 		}</Paper>
