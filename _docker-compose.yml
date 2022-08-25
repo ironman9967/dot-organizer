@@ -1,0 +1,9 @@
+version: "1.0"
+services:
+  dotorganizer:
+    image: ironman9967/dot-organizer:1.0.0
+    restart: always
+    environment:
+      PORT: 8081
+    ports:
+      - "8080:8081"
