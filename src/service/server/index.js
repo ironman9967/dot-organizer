@@ -3,10 +3,11 @@ export const createServer = ({
 	path,
 	Hapi,
 	Inert,
-	socketIOServer
+	socketIOServer,
+	port
 } = {}) => {
 	const server = Hapi.server({ 
-		port: 8080, 
+		port, 
 		host: 'localhost',
 		routes: {
 			files: {

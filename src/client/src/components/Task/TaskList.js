@@ -1,5 +1,5 @@
 
-import React from 'react'
+import { useCallback, useState, useEffect } from 'react'
 
 import Paper from '@mui/material/Paper'
 
@@ -13,7 +13,48 @@ export const TaskList = ({
 	removeTask,
 	upsertTask
 }) => {
-	if (!tasks) return
+	const [ tempTasks, setTempTasks ] = useState()
+	const testCb = useCallback(({ dragTask, dropTask }) => {
+		const reordered = tempTasks.map(task => {
+			if (dropTask._key === task._key) {
+
+				console.log('setting drop order', { dropTask, dragTask, task, change: {
+					...task,
+					order: dragTask.order
+				} })
+	
+				return {
+					...task,
+					order: dragTask.order
+				}
+			}
+			if (dragTask._key === task._key) {
+
+				console.log('setting drag order', { dropTask, dragTask, task, change: {
+					...task,
+					order: dropTask.order
+				} })
+	
+				return {
+					...task,
+					order: dropTask.order
+				}
+			}
+
+			console.log('no change', { dropTask, dragTask, task })
+
+			return task
+		})
+
+		console.log({ reordered })
+
+		setTempTasks(reordered)
+	}, [ tempTasks, setTempTasks ])
+	useEffect(
+		() => tempTasks ? void 0 : setTempTasks(tasks), 
+		[ tasks, tempTasks, setTempTasks ]
+	)
+	if (!tempTasks) return
 	const removeThisTask = _key => () => removeTask(_key)
 	const upsertThisTask = task => taskUpdates => 
 		upsertTask({
@@ -29,7 +70,7 @@ export const TaskList = ({
 			}}
 			elevation={24}
 		>	
-			{tasks
+			{tempTasks
 				.sort((
 					{ order: order1 }, 
 					{ order: order2 }
@@ -49,6 +90,7 @@ export const TaskList = ({
 							assignments={assignments}
 							removeTask={removeThisTask(task._key)}
 							upsertTask={upsertThisTask(task)}
+							testCb={testCb}
 						/>
 					</Paper>
 				))

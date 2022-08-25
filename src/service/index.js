@@ -22,7 +22,8 @@ const { startServer, stopServer } = createServer({
 	path,
 	Hapi,
 	Inert,
-	socketIOServer
+	socketIOServer,
+	port: process.env.PORT || 8080
 })
 
 const init = async () => {
