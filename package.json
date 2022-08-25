@@ -9,16 +9,16 @@
     ]
   },
   "watch": {
-    "exec": [
+    "start-service": [
       "src/service/**/*.js",
       "src/service/*.js"
     ]
   },
   "scripts": {
-    "build": "rm -rf dist && babel src/service -d dist && cp -a src/client/build dist/server/public",
-    "exec": "npm run build && cd dist && node service/index.js",
+    "build-service": "rm -rf dist && babel src/service -d dist",
+	"build-release": "npm run build-service && cd src/client && npm run build && cp -a build ../../dist/server/public",
+    "start-service": "npm run build-service && node dist/index.js",
     "watch": "npm-watch",
-    "start-local": "npm run watch",
 	"start": "node dist/index.js"
   },
   "keywords": [],
