@@ -48,8 +48,6 @@ export const createServer = ({
 				onEngineUpdate(({ data }) => io.emit('sync-data', data))
 				.unsubscribe
 			io.on('connection', socket => {
-				console.log('connected', socket.id)
-
 				socket.on('load-data', async () => 
 					socket.emit('sync-data', await getData()))
 				socket.on('upsert-timeslot', 
