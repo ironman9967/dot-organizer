@@ -78,9 +78,12 @@ export const createDatasource = ({ uuid }) => {
 			newTimeslot.order = timeslot.order
 		}
 		if (newTimeslot.order === void 0) {
-			newTimeslot.order = data.timeslots.length + 1
+			newTimeslot.order = data.timeslots.length
 		}
-		data.timeslots.push(ensureMeta(newTimeslot))
+		data.timeslots.push(ensureMeta({
+			order: newTimeslot.order,
+			title: newTimeslot.title
+		}))
 	}
 	const removeTask = async (keyToRemove, preserveAssignments = false) => {
 		data.tasks = data.tasks.reduce((newTasks, task) => {
@@ -105,7 +108,7 @@ export const createDatasource = ({ uuid }) => {
 			newTask.order = task.order
 		}
 		if (newTask.order === void 0) {
-			newTask.order = data.tasks.length + 1
+			newTask.order = data.tasks.length
 		}
 		if (newTask._key) {
 			const assigned = data.assignments.filter(({ 
@@ -116,7 +119,12 @@ export const createDatasource = ({ uuid }) => {
 				await removeAssignment(toRemove, true)
 			}
 		}
-		data.tasks.push(ensureMeta(newTask))
+		data.tasks.push(ensureMeta({
+			order: newTask.order,
+			title: newTask.title,
+			color: newTask.color,
+			timesPerWeek: newTask.timesPerWeek
+		}))
 	}
 	return {
 		getData: async () => data,
