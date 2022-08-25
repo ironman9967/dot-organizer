@@ -1,6 +1,7 @@
 services:
-  web:
-    build: .
+  dotorganizer:
+    image: ironman9967/dot-organizer:latest
+    restart: always
     environment:
       PORT: 8080
     ports:
