@@ -8,7 +8,6 @@ export const createServer = ({
 } = {}) => {
 	const server = Hapi.server({ 
 		port, 
-		// host: 'localhost',
 		routes: {
 			files: {
 				relativeTo: path.join(__dirname, 'public')

@@ -2,6 +2,7 @@
 export const createEngine = ({
 	createSubject,
 	datasource: {
+		connect,
 		getData,
 		removeTimeslot,
 		upsertTimeslot,
@@ -11,8 +12,7 @@ export const createEngine = ({
 		upsertAssignment
 	}
 } = {}) => {
-	const unsubs = []
-	const { next, error, subscribe, filter } = createSubject()
+	const { next, error, filter } = createSubject()
 	error(console.error)
 	const { subscribe: onEngineUpdate } = 
 		filter(({ event }) => event === 'update')
@@ -22,6 +22,7 @@ export const createEngine = ({
 	}
 	return {
 		startEngine: async () => {
+			await connect()
 			return {
 				getData,
 				onEngineUpdate,

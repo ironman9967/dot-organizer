@@ -16,10 +16,13 @@
   },
   "scripts": {
     "build-service": "rm -rf dist && babel src/service -d dist",
-	"build-release": "npm run build-service && cd src/client && npm run build && cp -a build ../../dist/server/public",
+    "build-release": "npm run build-service && cd src/client && npm run build && cp -a build ../../dist/server/public",
     "start-service": "npm run build-service && node dist/index.js",
     "watch": "npm-watch",
-	"start": "node dist/index.js"
+    "start": "node dist/index.js",
+	"test-docker": "npm run stop-docker && npm run build-release && docker compose -f docker-compose.local.yml up --build --remove-orphans",
+	"stop-docker": "docker compose -f docker-compose.local.yml down --remove-orphans && docker system prune -f -a --volumes",
+	"build-docker-arm": "npm run stop-docker && docker buildx build -t ironman9967/dot-organizer --platform linux/arm64 ."
   },
   "keywords": [],
   "author": "",
@@ -27,8 +30,8 @@
   "dependencies": {
     "@hapi/hapi": "^20.2.2",
     "@hapi/inert": "^7.0.0",
+    "@redis/client": "^1.3.0",
     "create-subject-with-filter": "^0.0.5",
-    "npm-watch": "^0.11.0",
     "socket.io": "^4.5.1",
     "subject-with-filter": "^1.0.0",
     "uuid": "^8.3.2"
@@ -36,6 +39,7 @@
   "devDependencies": {
     "@babel/cli": "^7.18.10",
     "@babel/core": "^7.18.10",
-    "@babel/preset-env": "^7.18.10"
+    "@babel/preset-env": "^7.18.10",
+    "npm-watch": "^0.11.0"
   }
 }

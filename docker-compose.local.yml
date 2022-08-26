@@ -1,7 +1,21 @@
 services:
-  web:
+  dotorganizer:
     build: .
     environment:
       PORT: 8080
+      REDIS_URL: 'redis://redis:6379'
     ports:
       - "8080:8080"
+    depends_on:
+      - redis
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 60 1 --loglevel warning
+    volumes: 
+      - datasource:/data
+volumes:
+  datasource:
+    driver: local

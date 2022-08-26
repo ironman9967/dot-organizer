@@ -1,5 +1,9 @@
 
-export const createDatasource = ({ uuid }) => {
+export const createDatasource = ({ 
+	uuid,
+	createClient,
+	url
+}) => {
 	const ensureMeta = obj => ({
 		_key: obj._key ? obj._key : uuid(),
 		...obj
@@ -126,7 +130,61 @@ export const createDatasource = ({ uuid }) => {
 			timesPerWeek: newTask.timesPerWeek
 		}))
 	}
+	const redisUrl = `redis(${url})`
+	const timeout = procName => {
+		let t = void 0
+		const fail = () => {
+			console.error(`"${procName}" timeout!!`)
+			process.exit(1)
+		}
+		return {
+			start: () => t = setTimeout(fail, 60000),
+			clear: () => clearTimeout(t)
+		}
+	}
+	const { start, clear } = timeout(redisUrl)
+	const client = createClient({ url })
+	let isConnected = false
 	return {
+		connect: async () => {
+			start()
+			client.on('connect', () => {
+				isConnected = true
+				clear()
+				console.log(`connected to ${redisUrl}`)
+			})
+			client.on('disconnect', () => {
+				isConnected = false
+				start()
+				console.log(`disconnected from ${redisUrl}`)
+			})
+			let printErr = true
+			client.on('error', err => {
+				if ([
+					'ECONNREFUSED',
+					'ENOTFOUND'
+				].reduce((i, code) => i + err.toString().indexOf(code), 0) < 0) {
+					return console.error(err)
+				}
+				if (printErr) {
+					console.error(err)
+					printErr = false
+					setTimeout(() => printErr = true, 10000)
+				}
+			})
+			console.log(`connecting to ${redisUrl}...`)
+			await client.connect()
+			const k = 'dot-org-key'
+			await client.set(k, JSON.stringify({ some: 'data' }))
+			const value = await client.get(k)
+			console.log({ value })
+		},
+		disconnect: async () => {
+			[ 'connect', 'disconnect', 'error' ]
+				.map(e => client.removeAllListeners(e))
+			clear()
+			return isConnected ? client.quit() : void 0
+		},
 		getData: async () => data,
 		removeTimeslot,
 		upsertTimeslot,
