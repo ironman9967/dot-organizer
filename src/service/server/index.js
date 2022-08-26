@@ -8,6 +8,7 @@ export const createServer = ({
 } = {}) => {
 	const server = Hapi.server({ 
 		port, 
+		host: 'localhost',
 		routes: {
 			files: {
 				relativeTo: path.join(__dirname, 'public')
@@ -44,10 +45,12 @@ export const createServer = ({
 					}
 				}
 			})
-			unsubEngineUpdate = 
-				onEngineUpdate(({ data }) => io.emit('sync-data', data))
-				.unsubscribe
+			unsubEngineUpdate = onEngineUpdate(({ 
+				data
+			}) => io.emit('sync-data', data)).unsubscribe
 			io.on('connection', socket => {
+				console.log('connected', socket.id)
+
 				socket.on('load-data', async () => 
 					socket.emit('sync-data', await getData()))
 				socket.on('upsert-timeslot', 

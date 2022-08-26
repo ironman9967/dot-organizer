@@ -1,6 +1,5 @@
 
 import React from 'react'
-import { useDrag, useDrop } from 'react-dnd'
 
 import Grid from '@mui/material/Grid'
 
@@ -13,31 +12,8 @@ export const TaskRow = ({
 	task, 
 	assignments,
 	removeTask,
-	upsertTask,
-	testCb
+	upsertTask
 }) => {
-	const [, dragRef] = useDrag(() => ({
-		type: 'task-reorder',
-		item: task,
-		end: task => console.log({ toTask: task, task })
-	}))
-	const [, dropRef] = useDrop({
-        accept: 'task-reorder',
-		hover: dragTask => {
-			if (dragTask._key !== task._key) {
-				testCb({ dragTask, dropTask: task })
-			}
-
-			// if (dragTask._key !== task._key
-			// 	&& (!reorder
-			// 		|| reorder.dragTask._key !== dragTask._key
-			// 		|| reorder.dropTask._key !== task._key)
-			// ) {
-			// 	console.log('setReorder', { dragTask, dropTask: task, reorder })
-			// 	setReorder({ dragTask, dropTask: task })
-			// }
-		}
-    })
 	return (
 		<Grid 
 			container 
@@ -46,7 +22,6 @@ export const TaskRow = ({
 			rowSpacing={1}
 			direction="row"
 			alignItems="center"
-			ref={node => dragRef(dropRef(node))}
 		>
 			<Grid 
 				item
