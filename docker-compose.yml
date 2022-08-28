@@ -1,6 +1,6 @@
 services:
   dotorganizer:
-    image: ironman9967/dot-organizer
+    image: {USER}/dot-organizer
     restart: always
     environment:
       PORT: 8080
