@@ -15,12 +15,11 @@ export const TaskList = ({
 }) => {
 	if (!tasks) return
 	const removeThisTask = _key => () => removeTask(_key)
-	const upsertThisTask = task => taskUpdates => 
-		upsertTask({
-			...task,
-			...taskUpdates,
-			_key: task._key
-		})
+	const upsertThisTask = task => taskUpdates => upsertTask({
+		...task,
+		...taskUpdates,
+		_key: task._key
+	})
 	return (
 		<Paper
 			style={{

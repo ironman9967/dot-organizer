@@ -10,21 +10,16 @@ import { Server as socketIOServer } from 'socket.io'
 import { createClient } from '@redis/client'
 
 import { createDatasource } from './datasource'
-import { createEngine } from './engine'
 import { createServer } from './server'
 
 const datasource = createDatasource({ 
 	uuid, 
+	createSubject,
 	createClient,
 	url: process.env.REDIS_URL || 'redis://localhost:6379'
 })
 
-const { startEngine, stopEngine } = createEngine({
-	createSubject,
-	datasource
-})
-
-const { startServer, stopServer } = createServer({
+const { startServer } = createServer({
 	path,
 	Hapi,
 	Inert,
@@ -34,8 +29,8 @@ const { startServer, stopServer } = createServer({
 
 const init = async () => {
 	console.log('starting...')
-	const engine = await startEngine()
-	const server = await startServer({ engine })
+	await datasource.connect()
+	const server = await startServer({ datasource })
 	console.log('started')
 
 	console.log(server)

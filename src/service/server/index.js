@@ -17,12 +17,11 @@ export const createServer = ({
 	const io = new socketIOServer(server.listener, {
 		path: '/socket'
 	})
-	let unsubEngineUpdate = () => {}
 	return {
 		startServer: async ({ 
-			engine: { 
+			datasource: {
+				onUpdate, 
 				getData,
-				onEngineUpdate, 
 				upsertTimeslot,
 				removeTimeslot,
 				upsertTask,
@@ -44,12 +43,8 @@ export const createServer = ({
 					}
 				}
 			})
-			unsubEngineUpdate = onEngineUpdate(({ 
-				data
-			}) => io.emit('sync-data', data)).unsubscribe
+			onUpdate(data => io.emit('sync-data', data))
 			io.on('connection', socket => {
-				console.log('connected', socket.id)
-
 				socket.on('load-data', async () => 
 					socket.emit('sync-data', await getData()))
 				socket.on('upsert-timeslot', 
@@ -79,10 +74,6 @@ export const createServer = ({
 			return { 
 				server: { uri: server.info.uri }
 			}
-		},
-		stopServer: async () => {
-			unsubEngineUpdate()
-			server.stop({ timeout: 60 * 1000 })
 		}
 	}
 }
