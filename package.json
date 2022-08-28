@@ -22,7 +22,7 @@
     "start": "node dist/index.js",
 	"test-docker": "npm run stop-docker && npm run build-release && docker compose -f docker-compose.local.yml up --build --remove-orphans",
 	"stop-docker": "docker compose -f docker-compose.local.yml down --remove-orphans && docker system prune -f -a --volumes",
-	"build-docker-arm": "npm run stop-docker && docker buildx build -t ironman9967/dot-organizer --platform linux/arm64 ."
+	"build-docker-arm": "npm run stop-docker && npm run build-release && docker buildx build -t ironman9967/dot-organizer --platform linux/arm64 ."
   },
   "keywords": [],
   "author": "",
