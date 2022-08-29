@@ -40,14 +40,11 @@ export const TimeslotAssignmentList = ({
 			ref={dropRef}
 			elevation={isOver ? 24 : 3}
 		>{timeslotAssignments.length > 0 &&
-			timeslotAssignments.map(({ 
-				task: { _key, color },
-				assignment
-			}) => (
+			timeslotAssignments.map(({ task, assignment }) => (
 				<TimeslotAssignment
-					key={_key}
+					key={JSON.stringify(assignment)}
 					size={size}
-					color={color}
+					task={task}
 					assignment={assignment}
 					removeAssignment={removeAssignment}
 				/>
